@@ -1,0 +1,22 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* twoSum(int* nums, int nums_size_tmp, int* target, int* returnsize){ /*int* main()用法代表main會回傳指標，他是一個會回傳指標的函式*/
+//    printf("Hello, World!\n");
+    *returnsize = 2;                                  //回傳的答案大小，如果不寫的話會太多然後空間爆掉
+    int* Ans;                                         //建一個答案用的指標，因為我的答案之後會放在記憶體的一個位址，所以我回傳的答案是一個指標指著位址
+    Ans=(int*)malloc(sizeof(int) * 2);                //分配2bytes的記憶體空間給Ans
+    int nums_size = sizeof(nums) / sizeof(nums[0]);   //我要抓nums的陣列長度給下面的for迴圈用，利用sizeof抓整個nums的記憶體大小然後除以nums的單個元素的大小，就會等於nums有幾個元素
+
+    for(int i = 0; i <= nums_size; i++){
+        for(int j = i+1; j <= nums_size; j++){        //j的值跟i扯上關係，且要避免j跟i重複(題目要求)。我原先寫j跑0~nums_size，但會timeout而且i跟j會重複計算(比如num[1]+num[2]之後又num[2]+num[1]，多此一舉浪費時間)
+            if( (nums[i]+nums[j] ) == target){
+                Ans[0]=i;                             //Ans[0]跟Ans[1]可交換，leetcode不介意答案順序。(比如[1,2]或[2,1]他都接受)
+                Ans[1]=j;
+                return Ans;
+            }
+        }
+    }
+    *returnsize = 0;                                //回傳 NULL 的時候要把size設為0
+    return NULL;                                    //都找不到符合條件的就只好回傳NULL
+}
